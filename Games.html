@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Games.html</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Hub</title>
+  <style>
+    body {
+      font-family: cursive;
+      background-color: #87ceeb;
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 15px;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #333;
+      color: white;
+    }
+    button:hover {
+      background-color: #555;
+    }
+    .game-section {
+      display: none;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Game Hub</h1>
+  <div class="buttons">
+    <button onclick="showGame('rps')">Rock Paper Scissors</button>
+    <button onclick="showGame('hangman')">Hangman</button>
+    <button onclick="showGame('ocQuiz')">OC Quiz</button>
+    <button onclick="showGame('ticTacToe')">Tic Tac Toe</button>
+    <button onclick="showGame('clickButton')">Click the Button</button>
+    <button onclick="showGame('whackButton')">Whack a Button</button>
+    <button onclick="showGame('rollDice')">Roll the Dice</button>
+    <button onclick="showGame('trivia')">Trivia</button>
+    <button onclick="showGame('moodChecker')">Mood Checker</button>
+    <button onclick="showGame('ocPersonality')">OC Personality Test</button>
+  </div>
+
+  <div id="rps" class="game-section">
+    <h2>Rock Paper Scissors</h2>
+    <button onclick="playRPS('rock')">Rock</button>
+    <button onclick="playRPS('paper')">Paper</button>
+    <button onclick="playRPS('scissors')">Scissors</button>
+    <p id="rpsResult"></p>
+  </div>
+
+  <div id="hangman" class="game-section">
+    <h2>Hangman</h2>
+    <p>Word: <span id="hangmanWord">_ _ _ _</span></p>
+    <input type="text" id="hangmanGuess" maxlength="1">
+    <button onclick="guessHangman()">Guess</button>
+    <p id="hangmanStatus"></p>
+  </div>
+
+  <div id="ocQuiz" class="game-section">
+    <h2>OC Quiz</h2>
+    <p id="ocQuizQuestion"></p>
+    <button onclick="answerOCQuiz(true)">Yes</button>
+    <button onclick="answerOCQuiz(false)">No</button>
+    <p id="ocQuizFeedback"></p>
+  </div>
+
+  <div id="ticTacToe" class="game-section">
+    <h2>Tic Tac Toe</h2>
+    <table id="tttBoard"></table>
+    <p id="tttStatus"></p>
+  </div>
+
+  <div id="clickButton" class="game-section">
+    <h2>Click the Button</h2>
+    <button onclick="countClicks()">Click me!</button>
+    <p id="clickCount">0 clicks</p>
+  </div>
+
+  <div id="whackButton" class="game-section">
+    <h2>Whack a Button</h2>
+    <button id="whack" onclick="whack()">Whack!</button>
+    <p id="whackCount">0 whacks</p>
+  </div>
+
+  <div id="rollDice" class="game-section">
+    <h2>Roll the Dice</h2>
+    <button onclick="rollDice()">Roll</button>
+    <p id="diceResult"></p>
+  </div>
+
+  <div id="trivia" class="game-section">
+    <h2>Trivia</h2>
+    <p id="triviaQuestion">Trivia coming soon...</p>
+  </div>
+
+  <div id="moodChecker" class="game-section">
+    <h2>Mood Checker</h2>
+    <button onclick="checkMood()">Check Mood</button>
+    <p id="moodResult"></p>
+  </div>
+
+  <div id="ocPersonality" class="game-section">
+    <h2>OC Personality Test</h2>
+    <p>Test coming soon...</p>
+  </div>
+
+  <script>
+    const sections = document.querySelectorAll('.game-section');
+
+    function showGame(id) {
+      sections.forEach(s => s.style.display = 'none');
+      const game = document.getElementById(id);
+      game.style.display = 'block';
+      game.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function playRPS(choice) {
+      const choices = ['rock', 'paper', 'scissors'];
+      const comp = choices[Math.floor(Math.random() * 3)];
+      let result = '';
+      if (choice === comp) result = "It's a tie!";
+      else if ((choice === 'rock' && comp === 'scissors') || (choice === 'paper' && comp === 'rock') || (choice === 'scissors' && comp === 'paper'))
+        result = 'You win!';
+      else result = 'You lose!';
+      document.getElementById('rpsResult').textContent = `Computer chose ${comp}. ${result}`;
+    }
+
+    // Hangman basic mock
+    function guessHangman() {
+      const guess = document.getElementById('hangmanGuess').value;
+      document.getElementById('hangmanStatus').textContent = `You guessed: ${guess}`;
+    }
+
+    // OC Quiz mock
+    function answerOCQuiz(ans) {
+      document.getElementById('ocQuizFeedback').textContent = ans ? 'Correct!' : 'Wrong!';
+    }
+
+    // Click Button
+    let clicks = 0;
+    function countClicks() {
+      clicks++;
+      document.getElementById('clickCount').textContent = `${clicks} clicks`;
+    }
+
+    // Whack Button
+    let whacks = 0;
+    function whack() {
+      whacks++;
+      document.getElementById('whackCount').textContent = `${whacks} whacks`;
+    }
+
+    // Dice
+    function rollDice() {
+      const result = Math.floor(Math.random() * 6) + 1;
+      document.getElementById('diceResult').textContent = `You rolled a ${result}`;
+    }
+
+    // Mood Checker
+    function checkMood() {
+      const moods = ['Happy', 'Sad', 'Excited', 'Tired', 'Angry', 'Calm'];
+      const mood = moods[Math.floor(Math.random() * moods.length)];
+      document.getElementById('moodResult').textContent = `Your mood: ${mood}`;
+    }
+  </script>
+</body>
+</html>
+<!-- partial -->
+  
+</body>
+</html>
