@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Stories.html</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Story World</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #1e1e2f;
+      color: white;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .form {
+      background: rgba(255,255,255,0.05);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+
+    input, textarea, select, button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+    }
+
+    .oc-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .oc-item {
+      background: rgba(255,255,255,0.08);
+      padding: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .oc-details {
+      margin-top: 10px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>Creative Story World</h1>
+
+  <div class="form">
+    <input type="text" id="name" placeholder="OC Name" />
+    <input type="text" id="universe" placeholder="Universe (e.g. Hunger Games, The 100)" />
+    <select id="type">
+      <option value="Canon">Canon</option>
+      <option value="AU">AU</option>
+    </select>
+    <input type="text" id="title" placeholder="Story Title" />
+    <textarea id="backstory" rows="5" placeholder="Backstory, themes, notes..."></textarea>
+    <button onclick="saveOC()">Save</button>
+  </div>
+
+  <h2>Your OCs</h2>
+  <div class="oc-list" id="ocList"></div>
+
+  <script>
+    const nameInput = document.getElementById("name");
+    const universeInput = document.getElementById("universe");
+    const typeInput = document.getElementById("type");
+    const titleInput = document.getElementById("title");
+    const backstoryInput = document.getElementById("backstory");
+    const ocList = document.getElementById("ocList");
+
+    function saveOC() {
+      const oc = {
+        name: nameInput.value,
+        universe: universeInput.value,
+        type: typeInput.value,
+        title: titleInput.value,
+        backstory: backstoryInput.value,
+        date: new Date().toLocaleString()
+      };
+
+      let ocs = JSON.parse(localStorage.getItem("ocs")) || [];
+      ocs.push(oc);
+      localStorage.setItem("ocs", JSON.stringify(ocs));
+
+      nameInput.value = "";
+      universeInput.value = "";
+      titleInput.value = "";
+      backstoryInput.value = "";
+
+      displayOCs();
+    }
+
+    function displayOCs() {
+      const ocs = JSON.parse(localStorage.getItem("ocs")) || [];
+      ocList.innerHTML = "";
+
+      ocs.forEach((oc, index) => {
+        const div = document.createElement("div");
+        div.className = "oc-item";
+        div.innerHTML = `<strong>${oc.name}</strong> – ${oc.universe} (${oc.type})<br><em>${oc.title}</em><div class="oc-details" style="display:none;">${oc.backstory}<br><small>Saved on: ${oc.date}</small></div>`;
+        div.onclick = () => {
+          const detail = div.querySelector(".oc-details");
+          detail.style.display = detail.style.display === "none" ? "block" : "none";
+        };
+        ocList.appendChild(div);
+      });
+    }
+
+    displayOCs();
+  </script>
+</body>
+</html>
+<!-- partial -->
+  
+</body>
+</html>
