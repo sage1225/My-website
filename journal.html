@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Journal.html</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Personal Journal</title>
+  <style>
+    body {
+      background-color: #1c1c1c;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-family: cursive;
+    }
+
+    #date-time {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.1em;
+      color: #ccc;
+    }
+
+    textarea {
+      width: 100%;
+      height: 200px;
+      border-radius: 10px;
+      border: none;
+      padding: 15px;
+      font-size: 1em;
+      resize: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      backdrop-filter: blur(4px);
+    }
+
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #333;
+      color: white;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #444;
+    }
+
+    .entry {
+      white-space: pre-wrap;
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .entry time {
+      display: block;
+      font-size: 0.9em;
+      color: #aaa;
+      margin-bottom: 8px;
+    }
+
+    a {
+      color: #00ffff;
+      text-decoration: none;
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>My Personal Journal</h1>
+  <div id="date-time"></div>
+
+  <textarea id="entry" placeholder="Write your thoughts here..."></textarea>
+  <button onclick="saveEntry()">Save Entry</button>
+
+  <div id="entries"></div>
+
+  <a href="index.html">← Back to Home</a>
+
+  <script>
+    function updateDateTime() {
+      const now = new Date();
+      const dateTimeString = now.toLocaleString();
+      document.getElementById("date-time").textContent = "Today is: " + dateTimeString;
+    }
+
+    function saveEntry() {
+      const text = document.getElementById("entry").value.trim();
+      if (!text) return;
+
+      const now = new Date();
+      const entry = {
+        text: text,
+        time: now.toLocaleString()
+      };
+
+      const entries = JSON.parse(localStorage.getItem("journalEntries") || "[]");
+      entries.unshift(entry); // newest first
+      localStorage.setItem("journalEntries", JSON.stringify(entries));
+      document.getElementById("entry").value = "";
+      showEntries();
+    }
+
+    function showEntries() {
+      const entries = JSON.parse(localStorage.getItem("journalEntries") || "[]");
+      const container = document.getElementById("entries");
+      container.innerHTML = "";
+      for (const entry of entries) {
+        const div = document.createElement("div");
+        div.className = "entry";
+        div.innerHTML = `<time>${entry.time}</time>${entry.text}`;
+        container.appendChild(div);
+      }
+    }
+
+    // Initialize
+    updateDateTime();
+    showEntries();
+  </script>
+</body>
+</html>
+<!-- partial -->
+  
+</body>
+</html>
